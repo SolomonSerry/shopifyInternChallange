@@ -4,8 +4,11 @@ function App() {
   // console.log(process.env.REACT_APP_OPEN_AI_KEY)
 
   const [prompt, setPrompt] = useState("")
-  const [response, setResponse] = useState()
+  const [response, setResponse] = useState("")
   const [userInput, setUserInput] = useState("")
+  const [newArray, setNewArray] = useState([])
+  const [update, setUpdate] = useState(false)
+  const [key, setKey] = useState("")
 
   const handleChange = (event) => {
     setUserInput(event.target.value)
@@ -15,6 +18,27 @@ function App() {
     event.preventDefault();
     setPrompt(userInput);
   };
+
+  
+  
+  useEffect( ()=> {
+    if (update === true) {
+      const responseObj = {
+        userPrompt: prompt,
+        userResponse: response,
+        key: key,
+      };
+      setNewArray([responseObj, ...newArray])
+      setUpdate(false)
+    }
+
+  },[key, newArray, prompt, response, update])
+
+
+
+  
+
+  
 
   useEffect(() => {
      
@@ -40,16 +64,18 @@ function App() {
         return res.json()
       })
       .then((jsonData)=> {
-        setResponse(jsonData.choices[0].text)
+        setResponse(jsonData.choices[0].text, {prompt})
+        setKey(jsonData.created)
         console.log(jsonData)
+        setUpdate(true)
       });
     }
 
   },[prompt])
 
 
-  // console.log(response)
-  // console.log(prompt)
+  
+  
 
   return (
     <div className="App">
@@ -62,10 +88,19 @@ function App() {
       <button> Search </button>
 
     </form>
-      <article>
-        <p>{prompt}</p>
-        <p>{response}</p>
-      </article>
+     {newArray.map( (res, index) => {
+       console.log(res)
+
+       return (
+         <div key={res.key}>
+           <p>{res.userPrompt}</p>
+           <p>{res.userResponse}</p>
+         </div>
+       )
+     })
+     }
+
+     
     </div>
 
   );
