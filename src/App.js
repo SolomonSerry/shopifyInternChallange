@@ -41,6 +41,7 @@ function App() {
       })
       .then((jsonData)=> {
         setResponse(jsonData.choices[0].text)
+        console.log(jsonData)
       });
     }
 
