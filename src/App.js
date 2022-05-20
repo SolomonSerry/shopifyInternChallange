@@ -88,7 +88,7 @@ function App() {
       <button> Search </button>
 
     </form>
-     {newArray.map( (res, index) => {
+     {newArray.map( (res) => {
        console.log(res)
 
        return (
