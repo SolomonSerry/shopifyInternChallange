@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import './styles/sass/App.scss'
+import Header from "./componets /Header";
+import Footer from "./componets /Footer";
 
 function App() {
   // console.log(process.env.REACT_APP_OPEN_AI_KEY)
@@ -79,7 +82,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Fun With AI</h1>
+      <Header />
 
     <form action="" onSubmit={handleSubmit}>
 
@@ -99,7 +102,7 @@ function App() {
        )
      })
      }
-
+      <Footer />
      
     </div>
 
