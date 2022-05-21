@@ -84,24 +84,30 @@ function App() {
     <div className="App">
       <Header />
 
-    <form action="" onSubmit={handleSubmit}>
+    <main className="wrapper">
+      <form action="" onSubmit={handleSubmit}>
 
-      <label htmlFor="search">Search Area</label>
-      <textarea name="searchArea" id="search" cols="30" rows="10" onChange={handleChange} value={userInput}></textarea>
-      <button> Search </button>
+        <label className="sr-only" htmlFor="search">Search Area</label>
+        <textarea placeholder="What Would You Like To Know???" name="searchArea" id="search" cols="30" rows="10" onChange={handleChange} value={userInput}></textarea>
+        <button> Search </button>
 
-    </form>
-     {newArray.map( (res) => {
-       console.log(res)
+      </form>
 
-       return (
-         <div key={res.key}>
-           <p>{res.userPrompt}</p>
-           <p>{res.userResponse}</p>
-         </div>
-       )
-     })
-     }
+      <section className="resArea">
+        {newArray.map( (res) => {
+          console.log(res)
+
+          return (
+            <div className="resBubble" key={res.key}>
+              <p><span>Prompt:</span> {res.userPrompt}</p>
+              <p><span>Response:</span>{res.userResponse}</p>
+            </div>
+          )
+        })
+        }
+      </section>
+
+    </main>
       <Footer />
      
     </div>

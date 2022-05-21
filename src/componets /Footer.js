@@ -4,7 +4,9 @@ const Footer = () => {
     
     return (
         <footer>
-            <p>Created and Designed by Solomon Serry</p>
+            <div className="wrapper">
+                <p>Created and Designed by Solomon Serry</p>
+            </div>
         </footer>
     )
 }
