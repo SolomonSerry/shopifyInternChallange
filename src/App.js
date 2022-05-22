@@ -37,12 +37,6 @@ function App() {
 
   },[key, newArray, prompt, response, update])
 
-
-
-  
-
-  
-
   useEffect(() => {
      
     const data = {
@@ -69,7 +63,6 @@ function App() {
       .then((jsonData)=> {
         setResponse(jsonData.choices[0].text, {prompt})
         setKey(jsonData.created)
-        console.log(jsonData)
         setUpdate(true)
       });
     }
