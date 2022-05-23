@@ -2,19 +2,22 @@ import { useState, useEffect } from "react";
 import './styles/sass/App.scss'
 import Header from "./componets /Header";
 import Footer from "./componets /Footer";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
-  // console.log(process.env.REACT_APP_OPEN_AI_KEY)
+  
+  // All states 
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState("");
+  const [userInput, setUserInput] = useState("");
+  const [newArray, setNewArray] = useState([]);
+  const [update, setUpdate] = useState(false);
+  const [key, setKey] = useState("");
 
-  const [prompt, setPrompt] = useState("")
-  const [response, setResponse] = useState("")
-  const [userInput, setUserInput] = useState("")
-  const [newArray, setNewArray] = useState([])
-  const [update, setUpdate] = useState(false)
-  const [key, setKey] = useState("")
 
+// functions for the form
   const handleChange = (event) => {
-    setUserInput(event.target.value)
+    setUserInput(event.target.value);
   };
 
   const handleSubmit = (event) => {
@@ -23,20 +26,24 @@ function App() {
   };
 
   
-  
+  // listening for sumbit changes, once form is submited this will update new array
   useEffect( ()=> {
     if (update === true) {
+      // created an obj for response and prompt
       const responseObj = {
         userPrompt: prompt,
         userResponse: response,
         key: key,
       };
-      setNewArray([responseObj, ...newArray])
-      setUpdate(false)
+      // sets response obj to array, updates new array if another response is submitted 
+      setNewArray([responseObj, ...newArray]);
+      setUpdate(false);
     }
 
-  },[key, newArray, prompt, response, update])
+  },[key, newArray, prompt, response, update]);
 
+
+  // fetch that gets the response from API
   useEffect(() => {
      
     const data = {
@@ -61,9 +68,13 @@ function App() {
         return res.json()
       })
       .then((jsonData)=> {
-        setResponse(jsonData.choices[0].text, {prompt})
+        setResponse(jsonData.choices[0].text)
         setKey(jsonData.created)
         setUpdate(true)
+      })
+      
+      .catch(function (error) {
+        toast("Please Ask Another Question");
       });
     }
 
@@ -77,6 +88,20 @@ function App() {
     <div className="App">
       <Header />
 
+      {/* if there is no response Toaster will pop up */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            margin: '250px 0 0 0',
+            background: '#fbb034',
+          },
+
+        }}
+      />
+
+
     <main className="wrapper">
       <form action="" onSubmit={handleSubmit}>
 
@@ -87,8 +112,8 @@ function App() {
       </form>
 
       <section className="resArea">
+        <h2>Responses</h2>
         {newArray.map( (res) => {
-          console.log(res)
 
           return (
             <div className="resBubble" key={res.key}>
@@ -96,7 +121,7 @@ function App() {
               <p><span>Response:</span>{res.userResponse}</p>
             </div>
           )
-        })
+          })
         }
       </section>
 
